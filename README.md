@@ -2,6 +2,6 @@
 ## Habu 
 - Enumeration
 ## Get-AzRefreshToken 
-- Fetch Azure refresh token via Save-AzContext to use with AzureHound
+- Fetch Azure refresh or access token via Save-AzContext to use with AzureHound
 ## AZDL 
-- Mostly automated device login flow using a Python script to fetch refresh token to use with AzureHound
+- Mostly automated device login flow using a Python script to fetch a refresh or access token to use with AzureHound
