@@ -1,6 +1,7 @@
 # Tools for Azure
 ## Habu 
-- Enumeration
+- Azure Enumeration - will be deprecated soon since MS is deprecating the AzureAD PowerShell Module
+- Will need to rewrite this using the Az and Microsoft.Graph PowerShell Modules
 ## Get-AzRefreshToken 
 - Fetch Azure refresh or access token via Save-AzContext to use with AzureHound
 ## AZDL 
