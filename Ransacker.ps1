@@ -1,4 +1,4 @@
-function Invoke-MyMSSQL {                                                                                                                                           
+function Connect-AZSQL {                                                                                                                                           
 	param($ConnectionString)
 	
 	while ($true) {
