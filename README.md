@@ -12,3 +12,5 @@
 - https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth-ropc
 ## Grifter
 - Steal Azure access and refresh tokens via the DPAPI protected (currentuser context) $env:HOMEPATH/.azure/msal_token_cache.bin file
+## Ransacker
+- Connect to an Az SQL (<servername.database.windows.net) server using a connection string and execute queries
