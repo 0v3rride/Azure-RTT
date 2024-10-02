@@ -1,3 +1,5 @@
+#https://aadinternals.com/aadinternals/
+#https://www.lares.com/blog/hunting-azure-admins-for-vertical-escalation/
 Add-Type -AssemblyName System.Security
 
 $tokenPaths = @(
