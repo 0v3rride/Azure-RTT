@@ -1,4 +1,6 @@
 # Tools for Azure
+## Habu2
+  - (WIP) - enumerate various aspects of a organization's tenant via the graph, resource management or other APIs
 ## Habu 
 - Azure Enumeration - will be deprecated soon since MS is deprecating the AzureAD PowerShell Module
 - Will need to rewrite this using the Az and Microsoft.Graph PowerShell Modules
