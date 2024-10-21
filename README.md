@@ -10,7 +10,7 @@
 ## ADROPC
 - Python script to obtain an access or refresh token via username and password. This will not work with an account that is part of an Azure hybrid setup with identity federation (ADFS, etc.)
 - https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth-ropc
-## Grifter
+## local_token_finder
 - Steal Azure access and refresh tokens via the DPAPI protected (currentuser context) $env:HOMEPATH/.azure/msal_token_cache.bin file
-## Ransacker
+## Connect AZSQL
 - Connect to an Az SQL (<servername.database.windows.net) server using a connection string and execute queries
