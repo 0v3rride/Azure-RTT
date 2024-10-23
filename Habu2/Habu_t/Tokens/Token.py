@@ -8,7 +8,6 @@ from cryptography.hazmat.primitives.serialization.pkcs12 import load_key_and_cer
 from cryptography.hazmat.primitives import hashes, serialization
 import time
 import pathlib
-import platform
 import datetime
 import webbrowser
 from rich import print
@@ -181,16 +180,16 @@ def AuthorizationCode(user, password, tenant, clientid, scope, usecae, endpointv
 
         if tenant == None:
             tenant = user.split("@")[1]
-            
-        driver = None
 
         # use /oauth2/v2.0/token for newer version of the rest api
         #webbrowser.open_new(url=f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize?client_id={Clients.GetClientId(clientid)}&scope={Scopes.GetScope(scope)}&domain_hint={tenant}&login_hint={user}&response_type=code&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient&")
-        driver.get(f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize?client_id={Clients.GetClientId(clientid)}&scope={Scopes.GetScope(scope)}&domain_hint={tenant}&login_hint={user}&response_type=code&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient")
-        
+        if endpointversion == "1":
+            webbrowser.open_new(f"https://login.microsoftonline.com/{tenant}/oauth2/authorize?client_id={Clients.GetClientId(clientid)}&scope={Scopes.GetScope(scope)}&domain_hint={tenant}&login_hint={user}&response_type=code&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient")
+        else:
+            webbrowser.open_new(f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize?client_id={Clients.GetClientId(clientid)}&scope={Scopes.GetScope(scope)}&domain_hint={tenant}&login_hint={user}&response_type=code&redirect_uri=https://login.microsoftonline.com/common/oauth2/nativeclient")
         
         # https://stackoverflow.com/questions/24339236/getting-the-final-redirected-url
-        authcode_url = driver.current_url
+        authcode_url = input("Input entire url with authcode here (url in browser navbar on blank page): ")
 
         # v2.0 - uses scope instead of resource and include offline_access to include refresh token in response
         # https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#get-a-token
@@ -222,7 +221,7 @@ def AuthorizationCode(user, password, tenant, clientid, scope, usecae, endpointv
 
 # #https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow#second-case-access-token-request-with-a-certificate
 # #https://learn.microsoft.com/en-us/entra/identity-platform/certificate-credentials
-def MakeAssertion(certificate, password, tenant, clientid):
+def MakeAssertion(certificate, password, tenant, clientid, endpointversion):
     pfx_data = certificate.read()
     privatekey = None
     cert = None
@@ -246,8 +245,12 @@ def MakeAssertion(certificate, password, tenant, clientid):
     }
 
     # Payload of the JWT (also called claims)
+    endpoint = "v2.0/token"
+    if endpointversion == "1":
+        endpoint = "token"
+
     payload = {
-        "aud": f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token",# Audience (the API you're authenticating against)
+        "aud": f"https://login.microsoftonline.com/{tenant}/oauth2/{endpoint}",# Audience (the API you're authenticating against)
         "exp": datetime.datetime.now() + datetime.timedelta(minutes=960), # Expiration time
         "iss": Clients.GetClientId(clientid),        # Issuer (client_id)
         "jti": "12334434341234",         # JWT ID (unique identifier for the token)
@@ -260,7 +263,7 @@ def MakeAssertion(certificate, password, tenant, clientid):
 
 #FIXME: endpoint v1
 def CertificateBasedAuthentication(certificate, password, tenant, clientid, scope, usecae, endpointversion, useragent):
-    assertion = MakeAssertion(certificate, password, tenant, Clients.GetClientId(clientid))
+    assertion = MakeAssertion(certificate, password, tenant, Clients.GetClientId(clientid), endpointversion)
     response = None
     headers = {}
     endpoint = "v2.0/token"
