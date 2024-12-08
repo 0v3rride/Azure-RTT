@@ -1,0 +1,9 @@
+typer
+rich
+xmltodict
+selenium
+selenium-wire
+requests
+azure-identity
+pymsql
+pymssql
